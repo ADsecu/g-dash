@@ -220,14 +220,13 @@ if file_upload is not None:
             supervisor_no = st.selectbox('مشرف', sorted(df['Unnamed: 2'].unique()))
             if len(df['Unnamed: 2'].unique()) > 1:
                 if st.checkbox("تفعيل فلتر المشرف"):
-                    
                     df = df[df['Unnamed: 4'] == supervisor_no]
 
     with col3:
             mvice_no = st.selectbox('م نواب', sorted(df['Unnamed: 3'].unique()))
             if len(e_assoss['Unnamed: 3'].unique()) > 1:
                 if st.checkbox("تفعيل فلتر م نواب"):
-                    st.caption( ":white_check_mark:"+ "فلتر م النائب مفعل")
+                    st.caption( ":white_check_mark:"+ "فلتر م نواب مفعل")
                     df = df[df['Unnamed: 3'] == mvice_no]
 
     with col4:
@@ -238,7 +237,7 @@ if file_upload is not None:
     with col5:
             associate_no = st.selectbox('مساعد', sorted(df['Unnamed: 5'].unique()),index=0)
             df = df[df['Unnamed: 5'] == associate_no]
-            st.caption( ":white_check_mark:"+ "فلتر م المساعد مفعل")
+            st.caption( ":white_check_mark:"+ "فلتر المساعد مفعل")
 
 
 
