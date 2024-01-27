@@ -47,7 +47,7 @@ if file_upload is not None:
         e_supervisor = df[df['منطقة العمل'] == 'مشرف منطقة']
         if len(e_supervisor) >1:
             st.write("more than 1")
-        col1,col2 = st.columns(2)
+        col1,col2 = st.columns([1,2])
         with col1:
             st.metric("**:green[الإنتاجية]**", "{:,}%".format
                 (e_supervisor['نسبة الاكتمال'].unique()[0]))
@@ -75,7 +75,8 @@ if file_upload is not None:
                       marker=dict(colors=colors, ))
 
         with col2:
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig,use_container_width=True)
+
 
     co1 , co2 = st.columns(2)
     with co1:
@@ -88,15 +89,16 @@ if file_upload is not None:
                        <h2 style="text-align: center">جمع البيانات</h2>
 
                        """, unsafe_allow_html=True)
+
             col1, col2 = st.columns(2)
             with col1:
-                st.metric("**أعطت كامل البيانات**", "{:,}✅".format(full))
-                st.metric("**أعطت بعض البيانات**", "{:,}⌛".format(part))
+                    st.metric("**أعطت كامل البيانات**", "{:,}✅".format(full))
+                    st.metric("**أعطت بعض البيانات**", "{:,}⌛".format(part))
 
 
             with col2:
-                st.metric("**رفض إعطاء البيانات**", "{:,}⛔".format(refuse))
-                st.metric("**المدلي غير متواجد حالياً**", "{:,}📆".format(not_found))
+                    st.metric("**رفض إعطاء البيانات**", "{:,}⛔".format(refuse))
+                    st.metric("**المدلي غير متواجد حالياً**", "{:,}📆".format(not_found))
 
 
 
@@ -115,14 +117,15 @@ if file_upload is not None:
                     "**أخرى**", "{:,}".format(e_supervisor['Unnamed: 17'].unique()[0]))
                 st.metric("**إستيفاء ذاتي**",
                           "{:,}".format(e_supervisor['Unnamed: 18'].unique()[0]))
-                st.metric("**تحت التأسيس**",
-                          "{:,}".format(e_supervisor['Unnamed: 19'].unique()[0]))
+
 
             with col3:
                 st.metric(
                     "**خالية**", "{:,}".format(e_supervisor['Unnamed: 20'].unique()[0]))
                 st.metric("**ليست منشأة**",
                           "{:,}".format(e_supervisor['Unnamed: 22'].unique()[0]))
+                st.metric("**تحت التأسيس**",
+                          "{:,}".format(e_supervisor['Unnamed: 19'].unique()[0]))
 
     with co2:
         with st.expander("**مستوى المشرف**", expanded=True):
@@ -134,10 +137,13 @@ if file_upload is not None:
             with col1:
                 st.metric("**للعمل فقط 🏢**"
                          , "{:,}".format(e_supervisor['Unnamed: 32'].unique()[0]))
+                st.metric("**للسكن والعمل**",
+                          "{:,}".format(e_supervisor['حالة الاشغال'].unique()[0]))
+
             with col2:
-                st.metric("**لم يتم العثور عليها 🔍**"
-                         , "{:,}".format(e_supervisor['Unnamed: 38'].unique()[0]))
-            st.metric("**منشأة حكومية 🏛**"
+                st.metric("**خالي ومعد للعمل**",
+                          "{:,}".format(e_supervisor['Unnamed: 33'].unique()[0]))
+                st.metric("**منشأة حكومية 🏛**"
                          , "{:,}".format(e_supervisor['Unnamed: 39'].unique()[0]))
 
 
@@ -146,16 +152,16 @@ if file_upload is not None:
         with st.expander("**المزيد ➕ -**"):
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("**للسكن والعمل**",
-                          "{:,}".format(e_supervisor['حالة الاشغال'].unique()[0]))
+                st.metric("**لم يتم العثور عليها 🔍**"
+                         , "{:,}".format(e_supervisor['Unnamed: 38'].unique()[0]))
+
                 st.metric("**معسكر عمل**",
                           "{:,}".format(e_supervisor['Unnamed: 31'].unique()[0]))
-                st.metric("**خالي ومعد للعمل**",
-                          "{:,}".format(e_supervisor['Unnamed: 33'].unique()[0]))
+   
+
             with col2:
             
-                st.metric("**تحت التشييد**",
-                          "{:,}".format(e_supervisor['Unnamed: 34'].unique()[0]))
+
                 st.metric("**تابع للوحة العقارية**",
                           "{:,}".format(e_supervisor['Unnamed: 35'].unique()[0]))
                 st.metric(
@@ -163,6 +169,8 @@ if file_upload is not None:
             with col3:
                 st.metric("**.ليست منشأة**",
                           "{:,}".format(e_supervisor['Unnamed: 37'].unique()[0]))
+                st.metric("**تحت التشييد**",
+                          "{:,}".format(e_supervisor['Unnamed: 34'].unique()[0]))
     "---"
 
     st.markdown("""
@@ -178,10 +186,10 @@ if file_upload is not None:
     for i in sorted(e_assoss['Unnamed: 5'].unique()):
         e_assoss_temp = e_assoss[e_assoss['Unnamed: 5'] == i]
         e_assoss_list.append({
-            "لم يتم العثور عليها" : e_assoss_temp['Unnamed: 38'].unique()[0],
-            "رفض إعطاء البيانات" : e_assoss_temp['Unnamed: 13'].unique()[0],
+            "إستيفاء ذاتي" : e_assoss_temp['Unnamed: 18'].unique()[0],
+            "أعطت بعض البيانات" : e_assoss_temp['Unnamed: 12'].unique()[0],
             "أعطت كامل البيانات" : e_assoss_temp['حالة جمع البيانات'].unique()[0],
-            "الإنتاجية" : e_assoss_temp['نسبة الاكتمال'].unique()[0],
+            "الإنتاجية %" : "{}".format(e_assoss_temp['نسبة الاكتمال'].unique()[0]),
             "المساعد" : e_assoss_temp['Unnamed: 5'].unique()[0],
             "المشرف": e_assoss_temp['Unnamed: 2'].unique()[0],
 
@@ -189,6 +197,7 @@ if file_upload is not None:
 
         })
     e_assoss_data = pd.DataFrame(e_assoss_list)
+
     col1,col2 = st.columns(2)
     with col1:
         with st.expander(" ",expanded=True):
@@ -196,7 +205,7 @@ if file_upload is not None:
                        <h4 style="text-align: center">جمع البيانات</h4>
 
                        """, unsafe_allow_html=True)
-            st.dataframe(e_assoss_data[['لم يتم العثور عليها','رفض إعطاء البيانات','أعطت كامل البيانات','المساعد']],use_container_width=True,hide_index=True)
+            st.dataframe(e_assoss_data[['إستيفاء ذاتي','أعطت بعض البيانات','أعطت كامل البيانات','المساعد']],use_container_width=True,hide_index=True)
 
 
     with col2:
@@ -205,7 +214,9 @@ if file_upload is not None:
                        <h4 style="text-align: center">الإنتاجية</h4>
 
                        """, unsafe_allow_html=True)
-            st.dataframe(e_assoss_data[['الإنتاجية','المساعد','المشرف']],use_container_width=True,hide_index=True)
+            st.data_editor(e_assoss_data[['الإنتاجية %','المساعد']],use_container_width=True,hide_index=True,column_config={
+                'الإنتاجية %' : st.column_config.ProgressColumn("الإنتاجية %",min_value=0,max_value=100,format='%i',width='medium')
+            })
 
     "---"
     col1,col2,col3,col4,col5 = st.columns(5)
@@ -220,13 +231,14 @@ if file_upload is not None:
             supervisor_no = st.selectbox('مشرف', sorted(df['Unnamed: 2'].unique()))
             if len(df['Unnamed: 2'].unique()) > 1:
                 if st.checkbox("تفعيل فلتر المشرف"):
+                    
                     df = df[df['Unnamed: 4'] == supervisor_no]
 
     with col3:
             mvice_no = st.selectbox('م نواب', sorted(df['Unnamed: 3'].unique()))
             if len(e_assoss['Unnamed: 3'].unique()) > 1:
                 if st.checkbox("تفعيل فلتر م نواب"):
-                    st.caption( ":white_check_mark:"+ "فلتر م نواب مفعل")
+                    st.caption( ":white_check_mark:"+ "فلتر م النائب مفعل")
                     df = df[df['Unnamed: 3'] == mvice_no]
 
     with col4:
@@ -237,7 +249,7 @@ if file_upload is not None:
     with col5:
             associate_no = st.selectbox('مساعد', sorted(df['Unnamed: 5'].unique()),index=0)
             df = df[df['Unnamed: 5'] == associate_no]
-            st.caption( ":white_check_mark:"+ "فلتر المساعد مفعل")
+            st.caption( ":white_check_mark:"+ "فلتر م المساعد مفعل")
 
 
 
@@ -333,11 +345,15 @@ if file_upload is not None:
             with col1:
                 st.metric("**للعمل فقط 🏢**"
                          , "{:,}".format(df['Unnamed: 32'].unique()[0]))
+                st.metric("**للسكن والعمل**",
+                          "{:,}".format(df['حالة الاشغال'].unique()[0]))
             with col2:
-                st.metric("**لم يتم العثور عليها 🔍**"
-                         , "{:,}".format(df['Unnamed: 38'].unique()[0]))
-            st.metric("**منشأة حكومية 🏛**"
+                st.metric("**خالي ومعد للعمل**",
+                          "{:,}".format(df['Unnamed: 33'].unique()[0]))
+
+                st.metric("**منشأة حكومية 🏛**"
                          , "{:,}".format(df['Unnamed: 39'].unique()[0]))
+
 
 
 
@@ -345,23 +361,27 @@ if file_upload is not None:
         with st.expander("**المزيد ➕ -**"):
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("**للسكن والعمل**",
-                          "{:,}".format(df['حالة الاشغال'].unique()[0]))
+
                 st.metric("**معسكر عمل**",
                           "{:,}".format(df['Unnamed: 31'].unique()[0]))
-                st.metric("**خالي ومعد للعمل**",
-                          "{:,}".format(df['Unnamed: 33'].unique()[0]))
+                st.metric("**لم يتم العثور عليها 🔍**"
+                         , "{:,}".format(df['Unnamed: 38'].unique()[0]))
+
             with col2:
             
                 st.metric("**تحت التشييد**",
                           "{:,}".format(df['Unnamed: 34'].unique()[0]))
                 st.metric("**تابع للوحة العقارية**",
                           "{:,}".format(df['Unnamed: 35'].unique()[0]))
-                st.metric(
-                    "**اخرى**", "{:,}".format(df['Unnamed: 36'].unique()[0]))
+
             with col3:
                 st.metric("**.ليست منشأة**",
                           "{:,}".format(df['Unnamed: 37'].unique()[0]))
+                st.metric(
+                    "**اخرى**", "{:,}".format(df['Unnamed: 36'].unique()[0]))
+
+
+
 
 
     
