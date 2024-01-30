@@ -40,7 +40,7 @@ if file_upload is not None:
     # workandout = 'Unnamed: 33'
 
     # df = df.rename(columns={''})
-
+    st.sidebar.button("تحميل التقرير :open_file_folder:",disabled=True)
     st.markdown("""
                    <h2 style="text-align: center">المسح الإقتصادي الشامل <br> منطقة المدينة المنورة</h2>
 
@@ -271,155 +271,155 @@ if file_upload is not None:
 
 
 
-            "---"
-            col1, col2, col3, col4, col5 = st.columns(5)
-            with col1:
-                df = df[df['منطقة العمل'] == "مساعد مشرف"]
-                worker_type = st.selectbox('نوع المشتغل', sorted(
-                    df['منطقة العمل'].unique()), disabled=True)
-                if len(df['منطقة العمل'].unique()) > 1:
-                    df = df[df['منطقة العمل'] == worker_type]
-
-            with col2:
-                supervisor_no = st.selectbox(
-                    'مشرف', sorted(df['Unnamed: 2'].unique()))
-                if len(df['Unnamed: 2'].unique()) > 1:
-                    if st.checkbox("تفعيل فلتر المشرف"):
-
-                        df = df[df['Unnamed: 4'] == supervisor_no]
-
-            with col3:
-                mvice_no = st.selectbox(
-                    'م نواب', sorted(df['Unnamed: 3'].unique()))
-                if len(e_assoss['Unnamed: 3'].unique()) > 1:
-                    if st.checkbox("تفعيل فلتر م نواب"):
-                        st.caption(":white_check_mark:" + "فلتر م النائب مفعل")
-                        df = df[df['Unnamed: 3'] == mvice_no]
-
-            with col4:
-                vice_no = st.selectbox('نائب', sorted(df['Unnamed: 4'].unique()))
-                if len(df['Unnamed: 4'].unique()) > 1:
-                    if st.checkbox("تفعيل فلتر النائب"):
-                        df = df[df['Unnamed: 4'] == vice_no]
-            with col5:
-                associate_no = st.selectbox('مساعد', sorted(
-                    df['Unnamed: 5'].unique()), index=0)
-                df = df[df['Unnamed: 5'] == associate_no]
-                st.caption(":white_check_mark:" + "فلتر م المساعد مفعل")
-
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric("**:green[الإنتاجية]**", "{:,}%".format
-                          (df['نسبة الاكتمال'].unique()[0]))
-
-                st.success("**:green[مكتملة]   {:,}**".format
-                           (df['Unnamed: 27'].unique()[0]))
-
-                st.info("**:blue[غير مكتملة]   {:,}**".format
-                        (df['Unnamed: 26'].unique()[0]))
-
-                st.error("**:red[جديدة]   {:,}**".format
-                         (df['حالة الإكتمال'].unique()[0]))
-
-                colmplate = df['Unnamed: 27'].unique()[0]
-                uncomplate = df['Unnamed: 26'].unique()[0]
-                new = df['حالة الإكتمال'].unique()[0]
-                colors = ['green', 'blue', 'red']
-
-                fig = px.pie(df, values=[colmplate, uncomplate, new], names=['المكتملة', 'غير مكتملة', 'جديد'],
-                             height=350)
-                fig.update_traces(
-                    marker=dict(colors=colors, ))
-
-                with col2:
-                    st.subheader("مساعد {}".format(associate_no))
-                    st.plotly_chart(fig, use_container_width=True)
-
-            co1, co2 = st.columns(2)
-            with co1:
-                with st.expander("**مـساعد {}**".format(associate_no), expanded=True):
-                    full = df['حالة جمع البيانات'].unique()[0]
-                    part = df['Unnamed: 12'].unique()[0]
-                    refuse = df['Unnamed: 13'].unique()[0]
-                    not_found = df['Unnamed: 21'].unique()[0]
-                    st.markdown("""
-                               <h2 style="text-align: center">جمع البيانات</h2>
-
-                               """, unsafe_allow_html=True)
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        st.metric("**أعطت كامل البيانات**", "{:,}✅".format(full))
-                        st.metric("**أعطت بعض البيانات**", "{:,}⌛".format(part))
-
-                    with col2:
-                        st.metric("**رفض إعطاء البيانات**", "{:,}⛔".format(refuse))
-                        st.metric("**المدلي غير متواجد حالياً**",
-                                  "{:,}📆".format(not_found))
-
-                with st.expander("**المزيد ➕**"):
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("**مغلقة نهائياً**",
-                                  "{:,}".format(df['Unnamed: 14'].unique()[0]))
-                        st.metric("**مغلقة مؤقتاً**",
-                                  "{:,}".format(df['Unnamed: 15'].unique()[0]))
-                        st.metric("**يطلب الزيارة مرة أخرى وقت آخر**",
-                                  "{:,}".format(df['Unnamed: 16'].unique()[0]))
-                    with col2:
-
-                        st.metric(
-                            "**أخرى**", "{:,}".format(df['Unnamed: 17'].unique()[0]))
-                        st.metric("**إستيفاء ذاتي**",
-                                  "{:,}".format(df['Unnamed: 18'].unique()[0]))
-                        st.metric("**تحت التأسيس**",
-                                  "{:,}".format(df['Unnamed: 19'].unique()[0]))
-
-                    with col3:
-                        st.metric(
-                            "**خالية**", "{:,}".format(df['Unnamed: 20'].unique()[0]))
-                        st.metric("**ليست منشأة**",
-                                  "{:,}".format(df['Unnamed: 22'].unique()[0]))
-
-            with co2:
-                with st.expander("**مـساعد {}**".format(associate_no), expanded=True):
-                    st.markdown("""
-                              <h2 style="text-align: center">حالة الإشغال</h2>
-
-                              """, unsafe_allow_html=True)
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        st.metric("**للعمل فقط 🏢**",
-                                  "{:,}".format(df['Unnamed: 32'].unique()[0]))
-                        st.metric("**للسكن والعمل**",
-                                  "{:,}".format(df['حالة الاشغال'].unique()[0]))
-                    with col2:
-                        st.metric("**خالي ومعد للعمل**",
-                                  "{:,}".format(df['Unnamed: 33'].unique()[0]))
-
-                        st.metric("**منشأة حكومية 🏛**",
-                                  "{:,}".format(df['Unnamed: 39'].unique()[0]))
-
-                with st.expander("**المزيد ➕ -**"):
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-
-                        st.metric("**معسكر عمل**",
-                                  "{:,}".format(df['Unnamed: 31'].unique()[0]))
-                        st.metric("**لم يتم العثور عليها 🔍**",
-                                  "{:,}".format(df['Unnamed: 38'].unique()[0]))
-
-                    with col2:
-
-                        st.metric("**تحت التشييد**",
-                                  "{:,}".format(df['Unnamed: 34'].unique()[0]))
-                        st.metric("**تابع للوحة العقارية**",
-                                  "{:,}".format(df['Unnamed: 35'].unique()[0]))
-
-                    with col3:
-                        st.metric("**.ليست منشأة**",
-                                  "{:,}".format(df['Unnamed: 37'].unique()[0]))
-                        st.metric(
-                        "**اخرى**", "{:,}".format(df['Unnamed: 36'].unique()[0]))
+           # "---"
+           # col1, col2, col3, col4, col5 = st.columns(5)
+           # with col1:
+           #     df = df[df['منطقة العمل'] == "مساعد مشرف"]
+           #     worker_type = st.selectbox('نوع المشتغل', sorted(
+           #         df['منطقة العمل'].unique()), disabled=True)
+           #     if len(df['منطقة العمل'].unique()) > 1:
+           #         df = df[df['منطقة العمل'] == worker_type]
+#
+           # with col2:
+           #     supervisor_no = st.selectbox(
+           #         'مشرف', sorted(df['Unnamed: 2'].unique()))
+           #     if len(df['Unnamed: 2'].unique()) > 1:
+           #         if st.checkbox("تفعيل فلتر المشرف"):
+#
+           #             df = df[df['Unnamed: 4'] == supervisor_no]
+#
+           # with col3:
+           #     mvice_no = st.selectbox(
+           #         'م نواب', sorted(df['Unnamed: 3'].unique()))
+           #     if len(e_assoss['Unnamed: 3'].unique()) > 1:
+           #         if st.checkbox("تفعيل فلتر م نواب"):
+           #             st.caption(":white_check_mark:" + "فلتر م النائب مفعل")
+           #             df = df[df['Unnamed: 3'] == mvice_no]
+#
+           # with col4:
+           #     vice_no = st.selectbox('نائب', sorted(df['Unnamed: 4'].unique()))
+           #     if len(df['Unnamed: 4'].unique()) > 1:
+           #         if st.checkbox("تفعيل فلتر النائب"):
+           #             df = df[df['Unnamed: 4'] == vice_no]
+           # with col5:
+           #     associate_no = st.selectbox('مساعد', sorted(
+           #         df['Unnamed: 5'].unique()), index=0)
+           #     df = df[df['Unnamed: 5'] == associate_no]
+           #     st.caption(":white_check_mark:" + "فلتر م المساعد مفعل")
+#
+           # col1, col2 = st.columns(2)
+           # with col1:
+           #     st.metric("**:green[الإنتاجية]**", "{:,}%".format
+           #               (df['نسبة الاكتمال'].unique()[0]))
+#
+           #     st.success("**:green[مكتملة]   {:,}**".format
+           #                (df['Unnamed: 27'].unique()[0]))
+#
+           #     st.info("**:blue[غير مكتملة]   {:,}**".format
+           #             (df['Unnamed: 26'].unique()[0]))
+#
+           #     st.error("**:red[جديدة]   {:,}**".format
+           #              (df['حالة الإكتمال'].unique()[0]))
+#
+           #     colmplate = df['Unnamed: 27'].unique()[0]
+           #     uncomplate = df['Unnamed: 26'].unique()[0]
+           #     new = df['حالة الإكتمال'].unique()[0]
+           #     colors = ['green', 'blue', 'red']
+#
+           #     fig = px.pie(df, values=[colmplate, uncomplate, new], names=['المكتملة', 'غير مكتملة', 'جديد'],
+           #                  height=350)
+           #     fig.update_traces(
+           #         marker=dict(colors=colors, ))
+#
+           #     with col2:
+           #         st.subheader("مساعد {}".format(associate_no))
+           #         st.plotly_chart(fig, use_container_width=True)
+#
+           # co1, co2 = st.columns(2)
+           # with co1:
+           #     with st.expander("**مـساعد {}**".format(associate_no), expanded=True):
+           #         full = df['حالة جمع البيانات'].unique()[0]
+           #         part = df['Unnamed: 12'].unique()[0]
+           #         refuse = df['Unnamed: 13'].unique()[0]
+           #         not_found = df['Unnamed: 21'].unique()[0]
+           #         st.markdown("""
+           #                    <h2 style="text-align: center">جمع البيانات</h2>
+#
+           #                    """, unsafe_allow_html=True)
+           #         col1, col2 = st.columns(2)
+           #         with col1:
+           #             st.metric("**أعطت كامل البيانات**", "{:,}✅".format(full))
+           #             st.metric("**أعطت بعض البيانات**", "{:,}⌛".format(part))
+#
+           #         with col2:
+           #             st.metric("**رفض إعطاء البيانات**", "{:,}⛔".format(refuse))
+           #             st.metric("**المدلي غير متواجد حالياً**",
+           #                       "{:,}📆".format(not_found))
+#
+           #     with st.expander("**المزيد ➕**"):
+           #         col1, col2, col3 = st.columns(3)
+           #         with col1:
+           #             st.metric("**مغلقة نهائياً**",
+           #                       "{:,}".format(df['Unnamed: 14'].unique()[0]))
+           #             st.metric("**مغلقة مؤقتاً**",
+           #                       "{:,}".format(df['Unnamed: 15'].unique()[0]))
+           #             st.metric("**يطلب الزيارة مرة أخرى وقت آخر**",
+           #                       "{:,}".format(df['Unnamed: 16'].unique()[0]))
+           #         with col2:
+#
+           #             st.metric(
+           #                 "**أخرى**", "{:,}".format(df['Unnamed: 17'].unique()[0]))
+           #             st.metric("**إستيفاء ذاتي**",
+           #                       "{:,}".format(df['Unnamed: 18'].unique()[0]))
+           #             st.metric("**تحت التأسيس**",
+           #                       "{:,}".format(df['Unnamed: 19'].unique()[0]))
+#
+           #         with col3:
+           #             st.metric(
+           #                 "**خالية**", "{:,}".format(df['Unnamed: 20'].unique()[0]))
+           #             st.metric("**ليست منشأة**",
+           #                       "{:,}".format(df['Unnamed: 22'].unique()[0]))
+#
+           # with co2:
+           #     with st.expander("**مـساعد {}**".format(associate_no), expanded=True):
+           #         st.markdown("""
+           #                   <h2 style="text-align: center">حالة الإشغال</h2>
+#
+           #                   """, unsafe_allow_html=True)
+           #         col1, col2 = st.columns(2)
+           #         with col1:
+           #             st.metric("**للعمل فقط 🏢**",
+           #                       "{:,}".format(df['Unnamed: 32'].unique()[0]))
+           #             st.metric("**للسكن والعمل**",
+           #                       "{:,}".format(df['حالة الاشغال'].unique()[0]))
+           #         with col2:
+           #             st.metric("**خالي ومعد للعمل**",
+           #                       "{:,}".format(df['Unnamed: 33'].unique()[0]))
+#
+           #             st.metric("**منشأة حكومية 🏛**",
+           #                       "{:,}".format(df['Unnamed: 39'].unique()[0]))
+#
+           #     with st.expander("**المزيد ➕ -**"):
+           #         col1, col2, col3 = st.columns(3)
+           #         with col1:
+#
+           #             st.metric("**معسكر عمل**",
+           #                       "{:,}".format(df['Unnamed: 31'].unique()[0]))
+           #             st.metric("**لم يتم العثور عليها 🔍**",
+           #                       "{:,}".format(df['Unnamed: 38'].unique()[0]))
+#
+           #         with col2:
+#
+           #             st.metric("**تحت التشييد**",
+           #                       "{:,}".format(df['Unnamed: 34'].unique()[0]))
+           #             st.metric("**تابع للوحة العقارية**",
+           #                       "{:,}".format(df['Unnamed: 35'].unique()[0]))
+#
+           #         with col3:
+           #             st.metric("**.ليست منشأة**",
+           #                       "{:,}".format(df['Unnamed: 37'].unique()[0]))
+           #             st.metric(
+           #             "**اخرى**", "{:,}".format(df['Unnamed: 36'].unique()[0]))
         else:
             st.header("لا توجد بيانات للمساعد")
 
@@ -617,6 +617,12 @@ if file_upload is not None:
             with col1:
                 with st.expander("  ",expanded=True):     
                     st.markdown(e_researcher_per.style.hide(axis="index").to_html(), unsafe_allow_html=True)
+             
+
+                    
+                    
+
+
             with col2:
                 st.subheader("الإنتاجية المتوقعة للباحث : {}".format(exp))
                 st.write("✅ **إنتاجية متوقعة**")
@@ -629,6 +635,7 @@ if file_upload is not None:
 
                                """, unsafe_allow_html=True)
             st.markdown(e_researcher_collection.style.hide(axis="index").to_html(), unsafe_allow_html=True)
+            "---"
            
             st.markdown("""
                                <h4 style="text-align: center">حالة الإشغال</h4>
