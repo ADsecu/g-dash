@@ -3,11 +3,12 @@ import pandas as pd
 import plotly.express as px
 import openpyxl
 from streamlit_option_menu import option_menu
-import datetime
+from datetime import datetime, timedelta, date
 
 
 ## need improvment##
 ## Ahmed Alsrehy##
+
 
 st.set_page_config(layout="wide", page_title="المسح الإقتصادي الشامل")
 
@@ -39,10 +40,26 @@ if file_upload is not None:
     # workandout = 'Unnamed: 33'
 
     # df = df.rename(columns={''})
+
     st.markdown("""
                    <h2 style="text-align: center">المسح الإقتصادي الشامل <br> منطقة المدينة المنورة</h2>
 
                    """, unsafe_allow_html=True)
+
+    today = date.today()
+    d1 = date(today.year,today.month,today.day)
+    d2 = date(2024,1,14)
+    delta = d1 - d2
+    days_f = delta.days
+    exp = 3.4 * days_f
+    col1,col2,col3 = st.columns(3,gap='large')
+    with col1:
+        st.metric("**تاريخ اليوم**","{}".format(d1))
+    with col2:
+        st.metric("**الإنتاجية المتوقعة**","{}%".format(exp))
+    with col3:
+        st.metric("**عدد الأيام المتبقية**","{}".format(30 - days_f))
+    "---"
 
     selected = option_menu(None, ["مشرف", "مساعد", "مفتش", "باحث"],
                            icons=['arrow-bar-right', 'arrow-bar-right','arrow-bar-right','arrow-bar-right'],
@@ -53,9 +70,10 @@ if file_upload is not None:
 
             e_supervisor = df[df['منطقة العمل'] == 'مشرف منطقة']
             col1, col2 = st.columns([1, 2])
+            cal = round(e_supervisor['نسبة الاكتمال'].unique()[0] - exp,2)
             with col1:
                 st.metric("**:green[الإنتاجية]**", "{:,}%".format
-                          (e_supervisor['نسبة الاكتمال'].unique()[0]))
+                          (e_supervisor['نسبة الاكتمال'].unique()[0]),cal)
 
                 st.success("**:green[مكتملة]   {:,}**".format
                            (e_supervisor['Unnamed: 27'].unique()[0]))
@@ -516,13 +534,14 @@ if file_upload is not None:
 
     elif selected == 'باحث':
         if "باحث ميداني" in df['منطقة العمل'].unique():
-            st.write(datetime.datetime.now())
+
             
 
             st.markdown("""
                                <h2 style="text-align: center">مستوى الباحث</h2>
 
                                """, unsafe_allow_html=True)
+            
 
             e_researcher = df[df['منطقة العمل'] == 'باحث ميداني']
             col1,col2 = st.columns(2)
@@ -568,12 +587,16 @@ if file_upload is not None:
 
 
                 })
+                exp2 = "✅" if exp <= e_researcher_temp['نسبة الاكتمال'].unique()[0] else "⚠️"
+
 
                 per.append({
                     "جديدة" : e_researcher_temp['حالة الإكتمال'].unique()[0],
                     "غير مكتملة" : e_researcher_temp['Unnamed: 26'].unique()[0],
                     "مكتملة" : e_researcher_temp['Unnamed: 27'].unique()[0],
-                     "الإنتاجية %": e_researcher_temp['نسبة الاكتمال'].unique()[0],
+                    #"النسبة المتوقعة" : exp2,
+                     #"الإنتاجية %": e_researcher_temp['نسبة الاكتمال'].unique()[0],
+                     "الإنتاجية": "{} {}%".format(exp2,e_researcher_temp['نسبة الاكتمال'].unique()[0]),
                      "الباحث": e_researcher_temp['Unnamed: 8'].unique()[0],
                 })
                       
@@ -586,28 +609,33 @@ if file_upload is not None:
     
 
 
-                            
-            with st.expander("  ", expanded=True):
-                st.markdown("""
-                               <h4 style="text-align: center">الإنتاجية</h4>
+            st.markdown("""
+                               <h3 style="text-align: center">الإنتاجية</h3>
 
-                               """, unsafe_allow_html=True)
-                st.data_editor(e_researcher_per, use_container_width=True, hide_index=True, column_config={
-                        'الإنتاجية %': st.column_config.ProgressColumn("الإنتاجية %", min_value=0, max_value=100, format='%i', width='small')
-                    })
+                               """, unsafe_allow_html=True)       
+            col1,col2 = st.columns(2)
+            with col1:
+                with st.expander("  ",expanded=True):     
+                    st.markdown(e_researcher_per.style.hide(axis="index").to_html(), unsafe_allow_html=True)
+            with col2:
+                st.subheader("الإنتاجية المتوقعة للباحث : {}".format(exp))
+                st.write("✅ **إنتاجية متوقعة**")
+                st.write("⚠️**أقل من النسبة المتوقعة**")
+             
 
-                st.markdown("""
+
+            st.markdown("""
                                <h4 style="text-align: center">جمع البيانات</h4>
 
                                """, unsafe_allow_html=True)
-                st.markdown(e_researcher_collection.style.hide(axis="index").to_html(), unsafe_allow_html=True)
-            with st.expander(" ", expanded=True):
-                st.markdown("""
+            st.markdown(e_researcher_collection.style.hide(axis="index").to_html(), unsafe_allow_html=True)
+           
+            st.markdown("""
                                <h4 style="text-align: center">حالة الإشغال</h4>
 
                                """, unsafe_allow_html=True)
     
-                st.markdown(e_researcher_occ.style.hide(axis="index").to_html(), unsafe_allow_html=True)
+            st.markdown(e_researcher_occ.style.hide(axis="index").to_html(), unsafe_allow_html=True)
 
         else:
             st.write("لا توجد بيانات على مستوى الباحث")
