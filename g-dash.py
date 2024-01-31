@@ -15,8 +15,6 @@ st.set_page_config(layout="wide", page_title="المسح الإقتصادي ال
 file_upload = st.sidebar.file_uploader("**ملف الإنتاجية فقط**", type=['xlsx'])
 if file_upload is not None:
     df = pd.read_excel(file_upload)
-    st.write(df)    
-    #st.write(df)
     df = df.iloc[1:, :]
     # full_data = 'حالة جمع البيانات'
     # some_data = 'Unnamed: 12'
