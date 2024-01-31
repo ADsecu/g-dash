@@ -15,6 +15,7 @@ st.set_page_config(layout="wide", page_title="المسح الإقتصادي ال
 file_upload = st.sidebar.file_uploader("**ملف الإنتاجية فقط**", type=['xlsx'])
 if file_upload is not None:
     df = pd.read_excel(file_upload)
+    st.write(df)    
     #st.write(df)
     df = df.iloc[1:, :]
     # full_data = 'حالة جمع البيانات'
@@ -208,7 +209,7 @@ if file_upload is not None:
                     "اخرى": e_assoss_temp['Unnamed: 17'].unique()[0],
                     "يطلب الزيارة في وقت اخر": e_assoss_temp['Unnamed: 16'].unique()[0],
                     "مغلقة مؤقتاً": e_assoss_temp['Unnamed: 15'].unique()[0],
-                    "رفض إعطاء البيانات": e_assoss_temp['Unnamed: 14'].unique()[0],
+                    "رفض إعطاء البيانات": e_assoss_temp['Unnamed: 13'].unique()[0],
                     "أعطت بعض البيانات": e_assoss_temp['Unnamed: 12'].unique()[0],
                     "أعطت كامل البيانات": e_assoss_temp['حالة جمع البيانات'].unique()[0],
                     "المساعد": e_assoss_temp['Unnamed: 5'].unique()[0],
@@ -459,8 +460,8 @@ if file_upload is not None:
                     "إستيفاء ذاتي": e_inspector_temp['Unnamed: 18'].unique()[0],
                     "اخرى": e_inspector_temp['Unnamed: 17'].unique()[0],
                     "يطلب الزيارة في وقت اخر": e_inspector_temp['Unnamed: 16'].unique()[0],
-                    "مغلقة مؤقتاً": e_inspector_temp['Unnamed: 15'].unique()[0],
-                    "رفض إعطاء البيانات": e_inspector_temp['Unnamed: 14'].unique()[0],
+                    "مغلقة مؤقتاً": e_inspector_temp['Unnamed: 14'].unique()[0],
+                    "رفض إعطاء البيانات": e_inspector_temp['Unnamed: 13'].unique()[0],
                     "أعطت بعض البيانات": e_inspector_temp['Unnamed: 12'].unique()[0],
                     "أعطت كامل البيانات": e_inspector_temp['حالة جمع البيانات'].unique()[0],
                     "المفتش": e_inspector_temp['Unnamed: 6'].unique()[0],
@@ -567,7 +568,7 @@ if file_upload is not None:
                     "اخرى": e_researcher_temp['Unnamed: 17'].unique()[0],
                     "يطلب الزيارة في وقت اخر": e_researcher_temp['Unnamed: 16'].unique()[0],
                     "مغلقة مؤقتاً": e_researcher_temp['Unnamed: 15'].unique()[0],
-                    "رفض إعطاء البيانات": e_researcher_temp['Unnamed: 14'].unique()[0],
+                    "رفض إعطاء البيانات": e_researcher_temp['Unnamed: 13'].unique()[0],
                     "أعطت بعض البيانات": e_researcher_temp['Unnamed: 12'].unique()[0],
                     "أعطت كامل البيانات": e_researcher_temp['حالة جمع البيانات'].unique()[0],
                     "الباحث": e_researcher_temp['Unnamed: 8'].unique()[0],
