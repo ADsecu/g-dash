@@ -15,6 +15,7 @@ st.set_page_config(layout="wide", page_title="المسح الإقتصادي ال
 
 
 file_upload = st.sidebar.file_uploader("**ملف الإنتاجية فقط**", type=['xlsx'])
+
 if file_upload is not None:
     df = pd.read_excel(file_upload)
     #st.write(df)
@@ -42,11 +43,12 @@ if file_upload is not None:
     # workandout = 'Unnamed: 33'
 
     # df = df.rename(columns={''})
-    st.sidebar.button("تحميل التقرير :open_file_folder:",disabled=True)
+
     st.markdown("""
                    <h2 style="text-align: center">المسح الإقتصادي الشامل</h2>
 
                    """, unsafe_allow_html=True)
+
 
     today = date.today()
     d1 = date(today.year,today.month,today.day)
@@ -69,9 +71,9 @@ if file_upload is not None:
         with st.expander("📌", expanded=True):
             st.metric("**عدد الأيام المتبقية**","{}".format(30 - days_f))
     "---"
-
-    selected = option_menu("القائمة", ["مشرف", "مساعد", "مفتش", "باحث"],
-                           icons=['arrow-bar-right', 'arrow-bar-right','arrow-bar-right','arrow-bar-right'],
+    with st.sidebar:
+        selected = option_menu("القائمة", ["مشرف", "مساعد", "مفتش", "باحث"],
+                           icons=['bi-arrow-bar-down', 'bi-arrow-bar-down','bi-arrow-bar-down','bi-arrow-bar-down'],
                            menu_icon="bi-list-ul", default_index=0, orientation="horizontal")
 
     if selected == "مشرف":
@@ -686,6 +688,26 @@ else:
 
                                """, unsafe_allow_html=True)
     st.image('img.png',width=900)
+
+
+footer="""<style>
+
+
+.footer {
+position: fixed;
+left: 0;
+bottom: 0;
+
+background-color: #DAE8F1;
+color: black;
+
+}
+</style>
+<div class="footer">
+<p style='display: block; text-align: left;font-size:11px;font-weight: bold;'>المدينة المنورة - أحمد السريحي</p>
+</div>
+"""
+st.sidebar.markdown(footer,unsafe_allow_html=True)
 
 
     
