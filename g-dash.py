@@ -56,20 +56,18 @@ if file_upload is not None:
     delta = d1 - d2
     days_f = delta.days
     exp = 3.4 * days_f
+    exp = 100
     col1,col2,col3 = st.columns(3,gap='small')
     with col1:
         with st.expander("📌",expanded=True):
             st.metric("**تاريخ اليوم**","{}".format(d1))
-            
-
-
 
     with col2:
         with st.expander( "📌",expanded=True):
             st.metric("**الإنتاجية المتوقعة**","{}%".format(exp))
     with col3:
         with st.expander("📌", expanded=True):
-            st.metric("**عدد الأيام المتبقية**","{}".format(30 - days_f))
+            st.metric("**عدد الأيام المتبقية**","{}".format(0))
     "---"
     with st.sidebar:
         selected = option_menu("القائمة", ["مشرف", "مساعد", "مفتش", "باحث"],
